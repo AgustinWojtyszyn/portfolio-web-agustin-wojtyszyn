@@ -3,12 +3,12 @@
   const ctx = canvas.getContext('2d', {alpha: true});
 
   const MAX_DPR = 1.6;
-  const STAR_DENSITY = 0.00008;
+  const STAR_DENSITY = 0.000095;
   const NODE_DENSITY = 0.000018;
-  const MAX_STARS = 150;
+  const MAX_STARS = 182;
   const MAX_NODES = 30;
   const ASTEROID_COUNT = 7;
-  const LINK_DISTANCE = 170;
+  const LINK_DISTANCE = 178;
   const LINK_DISTANCE_SQ = LINK_DISTANCE * LINK_DISTANCE;
 
   let width = 0;
@@ -81,9 +81,9 @@
         x: Math.random() * width,
         y: Math.random() * height,
         size: Math.random() < 0.85 ? 1 : 2,
-        alpha: rand(0.22, 0.58),
+        alpha: rand(0.28, 0.66),
         twinklePhase: Math.random() * Math.PI * 2,
-        twinkleSpeed: rand(0.2, 0.55),
+        twinkleSpeed: rand(0.25, 0.62),
         tint: pick(STAR_TINTS),
       });
     }
@@ -98,9 +98,9 @@
         x: Math.random() * width,
         y: Math.random() * height,
         size: 2,
-        alpha: rand(0.15, 0.35),
+        alpha: rand(0.24, 0.46),
         twinklePhase: Math.random() * Math.PI * 2,
-        twinkleSpeed: rand(0.12, 0.28),
+        twinkleSpeed: rand(0.16, 0.34),
         tint: pick(STAR_TINTS),
       });
     }
@@ -169,10 +169,16 @@
 
   function drawNebulaBase() {
     const g = ctx.createLinearGradient(0, 0, 0, height);
-    g.addColorStop(0, 'rgba(7, 12, 25, 0.42)');
-    g.addColorStop(0.5, 'rgba(5, 9, 20, 0.16)');
-    g.addColorStop(1, 'rgba(1, 5, 13, 0.52)');
+    g.addColorStop(0, 'rgba(10, 18, 36, 0.3)');
+    g.addColorStop(0.48, 'rgba(7, 13, 27, 0.14)');
+    g.addColorStop(1, 'rgba(3, 8, 18, 0.45)');
     ctx.fillStyle = g;
+    ctx.fillRect(0, 0, width, height);
+
+    const halo = ctx.createRadialGradient(width * 0.5, height * 0.46, 0, width * 0.5, height * 0.46, Math.min(width, height) * 0.62);
+    halo.addColorStop(0, 'rgba(82, 120, 198, 0.06)');
+    halo.addColorStop(1, 'rgba(82, 120, 198, 0)');
+    ctx.fillStyle = halo;
     ctx.fillRect(0, 0, width, height);
   }
 
@@ -180,7 +186,7 @@
     for (let i = 0; i < stars.length; i += 1) {
       const s = stars[i];
       const twinkle = Math.sin(time * s.twinkleSpeed + s.twinklePhase);
-      const alpha = s.alpha * (0.78 + twinkle * 0.22);
+      const alpha = s.alpha * (0.8 + twinkle * 0.24);
 
       const px = Math.round(s.x + pointer.x * parallax);
       const py = Math.round(s.y + pointer.y * parallax);
@@ -189,7 +195,7 @@
       ctx.fillRect(px, py, s.size, s.size);
 
       if (s.size > 1 && alpha > 0.24) {
-        ctx.fillStyle = `rgba(206, 222, 255, ${alpha * 0.25})`;
+        ctx.fillStyle = `rgba(216, 230, 255, ${alpha * 0.28})`;
         ctx.fillRect(px - 1, py, 1, s.size);
         ctx.fillRect(px + s.size, py, 1, s.size);
       }
@@ -207,8 +213,8 @@
       const py = Math.round(rock.y + pointer.y * 0.009);
       const size = Math.max(1, Math.round(rock.scale * 2));
 
-      if (rock.meteor && Math.random() > 0.45) {
-        ctx.strokeStyle = `rgba(180, 198, 225, ${rock.alpha * 0.24})`;
+      if (rock.meteor && Math.random() > 0.54) {
+        ctx.strokeStyle = `rgba(191, 210, 236, ${rock.alpha * 0.24})`;
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(px + 1, py + 1);
@@ -256,8 +262,8 @@
         if (distSq > LINK_DISTANCE_SQ) continue;
 
         const ratio = 1 - distSq / LINK_DISTANCE_SQ;
-        const alpha = 0.03 + ratio * 0.16;
-        ctx.strokeStyle = `rgba(136, 170, 232, ${alpha})`;
+        const alpha = 0.04 + ratio * 0.18;
+        ctx.strokeStyle = `rgba(144, 177, 238, ${alpha})`;
         ctx.beginPath();
         ctx.moveTo(ax, ay);
         ctx.lineTo(bx, by);
@@ -267,8 +273,8 @@
   }
 
   function drawNodes(time) {
-    ctx.shadowBlur = 11;
-    ctx.shadowColor = 'rgba(140, 168, 255, 0.36)';
+    ctx.shadowBlur = 13;
+    ctx.shadowColor = 'rgba(152, 178, 255, 0.4)';
 
     for (let i = 0; i < nodes.length; i += 1) {
       const n = nodes[i];
@@ -276,15 +282,15 @@
       const x = n.x + pointer.x * 0.016;
       const y = n.y + pointer.y * 0.016;
 
-      ctx.fillStyle = `rgba(148, 180, 255, ${n.glow * 0.16 * pulse})`;
+      ctx.fillStyle = `rgba(157, 188, 255, ${n.glow * 0.2 * pulse})`;
       ctx.beginPath();
       ctx.arc(x, y, n.radius * 2.3, 0, Math.PI * 2);
       ctx.fill();
 
-      ctx.fillStyle = `rgba(197, 214, 255, ${0.68 * pulse})`;
+      ctx.fillStyle = `rgba(210, 224, 255, ${0.72 * pulse})`;
       ctx.fillRect(Math.round(x - 1), Math.round(y - 1), 2, 2);
 
-      ctx.fillStyle = `rgba(123, 152, 226, ${0.65 * pulse})`;
+      ctx.fillStyle = `rgba(136, 162, 234, ${0.72 * pulse})`;
       ctx.fillRect(Math.round(x), Math.round(y), 1, 1);
     }
 
@@ -300,8 +306,8 @@
       height * 0.48,
       Math.min(width, height) * 0.58,
     );
-    gradient.addColorStop(0, 'rgba(5, 9, 18, 0.02)');
-    gradient.addColorStop(1, 'rgba(3, 7, 15, 0.18)');
+    gradient.addColorStop(0, 'rgba(7, 14, 28, 0.015)');
+    gradient.addColorStop(1, 'rgba(3, 8, 17, 0.16)');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, height);
   }

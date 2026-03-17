@@ -330,6 +330,8 @@ const portfolioItemsByLanguage: Record<Language, PortfolioItem[]> = {
         'Plataforma web para gestion diaria de pedidos de catering corporativo. Registra, organiza y exporta pedidos por empresa para optimizar logistica y control operativo.',
       url: 'https://github.com/AgustinWojtyszyn/Servifood-order-system',
       image: porfolioImage1,
+      stack: ['JavaScript', 'HTML', 'CSS', 'Supabase', 'PostgreSQL'],
+      repoUrl: 'https://github.com/AgustinWojtyszyn/Servifood-order-system',
     },
     {
       title: 'Arcade Web - Coleccion de mini-juegos',
@@ -337,6 +339,8 @@ const portfolioItemsByLanguage: Record<Language, PortfolioItem[]> = {
         'Aplicacion web con mini-juegos interactivos en JavaScript, con arquitectura modular e integracion de APIs externas.',
       url: 'https://arcade.agustinwojtyszyn.com/',
       image: porfolioImage2,
+      stack: ['JavaScript', 'HTML', 'CSS', 'APIs externas'],
+      demoUrl: 'https://arcade.agustinwojtyszyn.com/',
     },
     {
       title: 'Generador de contrasenas seguras',
@@ -344,6 +348,8 @@ const portfolioItemsByLanguage: Record<Language, PortfolioItem[]> = {
         'Aplicacion en Python para generar contrasenas robustas con combinaciones aleatorias de caracteres, numeros y simbolos.',
       url: 'https://github.com/AgustinWojtyszyn/Secure-password-generator',
       image: porfolioImage3,
+      stack: ['Python', 'CLI', 'Seguridad'],
+      repoUrl: 'https://github.com/AgustinWojtyszyn/Secure-password-generator',
     },
     {
       title: 'Sitios corporativos y landing pages',
@@ -351,6 +357,8 @@ const portfolioItemsByLanguage: Record<Language, PortfolioItem[]> = {
         'Desarrollo de sitios estaticos y landing pages a partir de disenos profesionales y maquetas Figma, con foco en fidelidad visual y responsive design.',
       url: 'https://github.com/AgustinWojtyszyn/app_tracking_laboral_sf',
       image: porfolioImage4,
+      stack: ['HTML', 'CSS', 'JavaScript', 'Responsive', 'Figma handoff'],
+      repoUrl: 'https://github.com/AgustinWojtyszyn/app_tracking_laboral_sf',
     },
   ],
   en: [
@@ -360,6 +368,8 @@ const portfolioItemsByLanguage: Record<Language, PortfolioItem[]> = {
         'Web platform for daily management of corporate catering orders. It registers, organizes, and exports orders by company to improve logistics and operational control.',
       url: 'https://github.com/AgustinWojtyszyn/Servifood-order-system',
       image: porfolioImage1,
+      stack: ['JavaScript', 'HTML', 'CSS', 'Supabase', 'PostgreSQL'],
+      repoUrl: 'https://github.com/AgustinWojtyszyn/Servifood-order-system',
     },
     {
       title: 'Arcade Web - Mini-game collection',
@@ -367,6 +377,8 @@ const portfolioItemsByLanguage: Record<Language, PortfolioItem[]> = {
         'Web application with interactive JavaScript mini-games, modular architecture, and external API integration.',
       url: 'https://arcade.agustinwojtyszyn.com/',
       image: porfolioImage2,
+      stack: ['JavaScript', 'HTML', 'CSS', 'External APIs'],
+      demoUrl: 'https://arcade.agustinwojtyszyn.com/',
     },
     {
       title: 'Secure password generator',
@@ -374,6 +386,8 @@ const portfolioItemsByLanguage: Record<Language, PortfolioItem[]> = {
         'Python application that generates strong passwords using random combinations of characters, numbers, and symbols.',
       url: 'https://github.com/AgustinWojtyszyn/Secure-password-generator',
       image: porfolioImage3,
+      stack: ['Python', 'CLI', 'Security'],
+      repoUrl: 'https://github.com/AgustinWojtyszyn/Secure-password-generator',
     },
     {
       title: 'Corporate websites and landing pages',
@@ -381,6 +395,8 @@ const portfolioItemsByLanguage: Record<Language, PortfolioItem[]> = {
         'Development of static websites and landing pages from professional designs and Figma mockups, focused on visual fidelity and responsive behavior.',
       url: 'https://github.com/AgustinWojtyszyn/app_tracking_laboral_sf',
       image: porfolioImage4,
+      stack: ['HTML', 'CSS', 'JavaScript', 'Responsive', 'Figma handoff'],
+      repoUrl: 'https://github.com/AgustinWojtyszyn/app_tracking_laboral_sf',
     },
   ],
 };

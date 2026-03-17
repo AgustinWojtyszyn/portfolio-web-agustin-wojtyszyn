@@ -1,6 +1,6 @@
 import {ChevronDownIcon} from '@heroicons/react/24/outline';
 import classNames from 'classnames';
-import {FC, memo} from 'react';
+import {FC, memo, useEffect, useRef} from 'react';
 
 import {useLanguage} from '../../context/LanguageContext';
 import {getHeroData, SectionId} from '../../data/data';
@@ -10,10 +10,94 @@ import Socials from '../Socials';
 const Hero: FC = memo(() => {
   const {language} = useLanguage();
   const {name, description, actions} = getHeroData(language);
+  const heroRootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!heroRootRef.current || typeof window === 'undefined') return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    let mounted = true;
+    let cleanup: (() => void) | undefined;
+
+    import('gsap').then(({gsap}) => {
+      if (!mounted || !heroRootRef.current) return;
+
+      const ctx = gsap.context(() => {
+        const timeline = gsap.timeline({defaults: {ease: 'power2.out'}});
+
+        timeline
+          .from('.hero-anim-card', {
+            autoAlpha: 0,
+            duration: 0.95,
+            scale: 0.98,
+            y: 32,
+          })
+          .from(
+            '.hero-anim-title',
+            {
+              autoAlpha: 0,
+              duration: 0.75,
+              y: 24,
+            },
+            '-=0.48',
+          )
+          .from(
+            '.hero-anim-description > *',
+            {
+              autoAlpha: 0,
+              duration: 0.62,
+              stagger: 0.12,
+              y: 18,
+            },
+            '-=0.4',
+          )
+          .from(
+            '.hero-anim-socials a',
+            {
+              autoAlpha: 0,
+              duration: 0.44,
+              scale: 0.9,
+              stagger: 0.08,
+              y: 10,
+            },
+            '-=0.36',
+          )
+          .from(
+            '.hero-anim-actions a',
+            {
+              autoAlpha: 0,
+              duration: 0.48,
+              stagger: 0.1,
+              y: 14,
+            },
+            '-=0.34',
+          )
+          .from(
+            '.hero-anim-scroll',
+            {
+              autoAlpha: 0,
+              duration: 0.5,
+              y: 12,
+            },
+            '-=0.18',
+          );
+      }, heroRootRef);
+
+      cleanup = () => ctx.revert();
+    });
+
+    return () => {
+      mounted = false;
+      cleanup?.();
+    };
+  }, []);
 
   return (
     <Section noPadding sectionId={SectionId.Hero}>
-      <div className="relative flex h-screen w-full items-center justify-center">
+      <div className="relative flex h-screen w-full items-center justify-center" ref={heroRootRef}>
         <iframe
           aria-hidden="true"
           className="absolute z-0 h-full w-full border-0"
@@ -21,18 +105,22 @@ const Hero: FC = memo(() => {
           tabIndex={-1}
           title="Animated network background"
         />
+        <div aria-hidden="true" className="hero-ambient-light absolute inset-0 z-[1]" />
         <div className="z-10 max-w-screen-lg px-4 lg:px-0" data-reveal>
-          <div className="hero-card flex flex-col items-center gap-y-6 rounded-xl p-6 text-center">
-            <h1 className="hero-title text-4xl font-bold text-white sm:text-5xl lg:text-7xl">{name}</h1>
-            {description}
-            <div className="flex gap-x-4 text-neutral-100">
+          <div className="hero-card hero-anim-card flex flex-col items-center gap-y-6 rounded-xl p-6 text-center">
+            <div className="hero-name-wrap">
+              <span aria-hidden="true" className="hero-title-stars" />
+              <h1 className="hero-title hero-anim-title text-4xl font-bold text-white sm:text-5xl lg:text-7xl">{name}</h1>
+            </div>
+            <div className="hero-anim-description">{description}</div>
+            <div className="hero-anim-socials flex gap-x-4 text-neutral-100">
               <Socials />
             </div>
-            <div className="flex w-full justify-center gap-x-4">
+            <div className="hero-anim-actions flex w-full justify-center gap-x-4">
               {actions.map(({href, text, primary, Icon}) => (
                 <a
                   className={classNames(
-                    'flex gap-x-2 rounded-full border-2 bg-none px-4 py-2 text-sm font-medium text-white ring-offset-gray-700/80 hover:bg-gray-700/80 focus:outline-none focus:ring-2 focus:ring-offset-2 sm:text-base',
+                    'hero-action-btn flex gap-x-2 rounded-full border-2 bg-none px-4 py-2 text-sm font-medium text-white ring-offset-gray-700/80 hover:bg-gray-700/80 focus:outline-none focus:ring-2 focus:ring-offset-2 sm:text-base',
                     primary ? 'border-orange-500 ring-orange-500' : 'border-white ring-white',
                   )}
                   href={href}
@@ -44,7 +132,7 @@ const Hero: FC = memo(() => {
             </div>
           </div>
         </div>
-        <div className="absolute inset-x-0 bottom-6 flex justify-center">
+        <div className="hero-anim-scroll absolute inset-x-0 bottom-6 flex justify-center">
           <a
             className="rounded-full bg-white p-1 ring-white ring-offset-2 ring-offset-gray-700/80 focus:outline-none focus:ring-2 sm:p-2"
             href={`/#${SectionId.About}`}>

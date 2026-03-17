@@ -4,7 +4,7 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: #02050d;
+  background: #040916;
 }
 
 .bg-wrap {
@@ -13,9 +13,10 @@ body {
   width: 100%;
   height: 100%;
   background:
-    radial-gradient(circle at 22% 14%, rgba(124, 162, 255, 0.12), transparent 32%),
-    radial-gradient(circle at 78% 82%, rgba(66, 97, 166, 0.12), transparent 42%),
-    linear-gradient(180deg, #040914 0%, #030712 45%, #02050d 100%);
+    radial-gradient(circle at 20% 16%, rgba(124, 162, 255, 0.2), transparent 34%),
+    radial-gradient(circle at 78% 24%, rgba(87, 125, 201, 0.14), transparent 40%),
+    radial-gradient(circle at 74% 84%, rgba(74, 110, 182, 0.16), transparent 44%),
+    linear-gradient(180deg, #070f22 0%, #050b18 42%, #040916 100%);
 }
 
 #networkCanvas {
@@ -29,6 +30,6 @@ body {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 50% 56%, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0.22) 72%, rgba(0, 0, 0, 0.38) 100%),
-    linear-gradient(180deg, rgba(1, 3, 8, 0.3) 0%, rgba(1, 2, 7, 0.52) 100%);
+    radial-gradient(circle at 50% 52%, rgba(8, 18, 36, 0.02) 0%, rgba(3, 8, 20, 0.24) 72%, rgba(2, 6, 14, 0.36) 100%),
+    linear-gradient(180deg, rgba(2, 6, 15, 0.22) 0%, rgba(2, 5, 12, 0.48) 100%);
 }

@@ -1,44 +1,61 @@
 import {ArrowTopRightOnSquareIcon} from '@heroicons/react/24/outline';
 import classNames from 'classnames';
 import Image from 'next/image';
-import {FC, memo, MouseEvent, useCallback, useEffect, useRef, useState} from 'react';
+import {FC, memo} from 'react';
 
-import {isMobile} from '../../config';
 import {useLanguage} from '../../context/LanguageContext';
 import {getPortfolioItems, getUiText, SectionId} from '../../data/data';
 import {PortfolioItem} from '../../data/dataDef';
-import useDetectOutsideClick from '../../hooks/useDetectOutsideClick';
 import Section from '../Layout/Section';
+
+type PortfolioCta = {href: string; label: string; kind: 'demo' | 'repo' | 'details' | 'default'};
+
+const copyByLanguage = {
+  es: {
+    demo: 'Demo',
+    repo: 'Repositorio',
+    details: 'Detalles',
+    view: 'Ver proyecto',
+  },
+  en: {
+    demo: 'Demo',
+    repo: 'Repository',
+    details: 'Details',
+    view: 'View project',
+  },
+} as const;
+
+const buildCtas = (
+  item: PortfolioItem,
+  labels: (typeof copyByLanguage)['es'] | (typeof copyByLanguage)['en'],
+): PortfolioCta[] => {
+  const ctas: PortfolioCta[] = [];
+
+  if (item.demoUrl) ctas.push({href: item.demoUrl, label: labels.demo, kind: 'demo'});
+  if (item.repoUrl) ctas.push({href: item.repoUrl, label: labels.repo, kind: 'repo'});
+  if (item.detailsUrl) ctas.push({href: item.detailsUrl, label: labels.details, kind: 'details'});
+
+  if (ctas.length === 0) {
+    ctas.push({href: item.url, label: labels.view, kind: 'default'});
+  }
+
+  return ctas;
+};
 
 const Portfolio: FC = memo(() => {
   const {language} = useLanguage();
   const portfolioItems = getPortfolioItems(language);
   const uiText = getUiText(language);
+  const labels = copyByLanguage[language];
 
   return (
     <Section className="bg-neutral-800" sectionId={SectionId.Portfolio}>
-      <div className="flex flex-col gap-y-8" data-reveal>
+      <div className="portfolio-shell flex flex-col gap-y-8" data-reveal>
         <h2 className="self-center text-xl font-bold text-white">{uiText.portfolioTitle}</h2>
-        <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
-          {portfolioItems.map((item, index) => {
-            const {title, image} = item;
-            return (
-              <div data-reveal key={`${title}-${index}`}>
-                <div
-                  className={classNames(
-                    'project-card group relative aspect-[16/10] w-full overflow-hidden rounded-lg shadow-lg shadow-black/30 lg:shadow-xl',
-                  )}>
-                  <Image
-                    alt={title}
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    placeholder="blur"
-                    src={image}
-                  />
-                  <ItemOverlay item={item} />
-                </div>
-              </div>
-            );
-          })}
+        <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+          {portfolioItems.map(item => (
+            <ProjectCard item={item} key={item.title} labels={labels} />
+          ))}
         </div>
       </div>
     </Section>
@@ -48,50 +65,60 @@ const Portfolio: FC = memo(() => {
 Portfolio.displayName = 'Portfolio';
 export default Portfolio;
 
-const ItemOverlay: FC<{item: PortfolioItem}> = memo(({item: {url, title, description}}) => {
-  const [mobile, setMobile] = useState(false);
-  const [showOverlay, setShowOverlay] = useState(false);
-  const linkRef = useRef<HTMLAnchorElement>(null);
-
-  useEffect(() => {
-    // Avoid hydration styling errors by setting mobile in useEffect
-    if (isMobile) {
-      setMobile(true);
-    }
-  }, []);
-  useDetectOutsideClick(linkRef, () => setShowOverlay(false));
-
-  const handleItemClick = useCallback(
-    (event: MouseEvent<HTMLElement>) => {
-      if (mobile && !showOverlay) {
-        event.preventDefault();
-        setShowOverlay(!showOverlay);
-      }
-    },
-    [mobile, showOverlay],
-  );
+const ProjectCard: FC<{
+  item: PortfolioItem;
+  labels: (typeof copyByLanguage)['es'] | (typeof copyByLanguage)['en'];
+}> = memo(({item, labels}) => {
+  const ctas = buildCtas(item, labels);
+  const {description, image, stack, title} = item;
 
   return (
-    <a
-      className={classNames(
-        'project-overlay absolute inset-0 h-full w-full bg-gray-900 transition-all duration-300',
-        {'opacity-0 hover:opacity-80': !mobile},
-        showOverlay ? 'opacity-80' : 'opacity-0',
-      )}
-      href={url}
-      onClick={handleItemClick}
-      ref={linkRef}
-      target="_blank">
-      <div className="relative h-full w-full p-4">
-        <div className="flex h-full w-full flex-col gap-y-2 overflow-y-auto overscroll-contain">
-          <h2 className="text-center font-bold text-white opacity-100">{title}</h2>
-          <p className="text-xs text-white opacity-100 sm:text-sm">{description}</p>
+    <article className="project-panel group overflow-hidden rounded-2xl border border-white/10 bg-slate-950/55" data-reveal>
+      <div className="grid h-full gap-0">
+        <div className="project-visual relative aspect-[16/10] overflow-hidden">
+          <Image
+            alt={title}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            placeholder="blur"
+            src={image}
+          />
+          <div className="project-visual-overlay absolute inset-0" />
         </div>
-        <span className="project-view-btn absolute bottom-2 left-2 rounded-full border border-cyan-300/50 bg-slate-900/70 px-3 py-1 text-xs font-semibold text-cyan-100">
-          View Project
-        </span>
-        <ArrowTopRightOnSquareIcon className="absolute bottom-1 right-1 h-4 w-4 shrink-0 text-white sm:bottom-2 sm:right-2" />
+
+        <div className="flex flex-col gap-y-4 p-5 sm:p-6 lg:p-7">
+          <h3 className="text-xl text-white">{title}</h3>
+          <p className="text-sm leading-6 text-slate-200/90">{description}</p>
+
+          {!!stack?.length && (
+            <ul className="flex flex-wrap gap-2">
+              {stack.map(tech => (
+                <li className="project-stack-pill rounded-full px-3 py-1 text-xs text-slate-100" key={`${title}-${tech}`}>
+                  {tech}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <div className="mt-auto flex flex-wrap gap-3 pt-2">
+            {ctas.map(cta => (
+              <a
+                className={classNames('project-cta inline-flex items-center gap-x-2 rounded-full px-4 py-2 text-sm font-semibold', {
+                  'project-cta-primary': cta.kind === 'demo' || cta.kind === 'default',
+                  'project-cta-secondary': cta.kind === 'repo' || cta.kind === 'details',
+                })}
+                href={cta.href}
+                key={`${title}-${cta.label}`}
+                rel="noreferrer"
+                target="_blank">
+                {cta.label}
+                <ArrowTopRightOnSquareIcon className="h-4 w-4" />
+              </a>
+            ))}
+          </div>
+        </div>
       </div>
-    </a>
+    </article>
   );
 });
+
+ProjectCard.displayName = 'ProjectCard';

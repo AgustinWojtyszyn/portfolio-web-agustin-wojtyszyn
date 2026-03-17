@@ -9,13 +9,15 @@ import Hero from '../components/Sections/Hero';
 import Portfolio from '../components/Sections/Portfolio';
 import Resume from '../components/Sections/Resume';
 import Testimonials from '../components/Sections/Testimonials';
-import {homePageMeta} from '../data/data';
+import {useLanguage} from '../context/LanguageContext';
+import {getHomePageMeta} from '../data/data';
 
 // eslint-disable-next-line react-memo/require-memo
 const Header = dynamic(() => import('../components/Sections/Header'), {ssr: false});
 
 const Home: FC = memo(() => {
-  const {title, description} = homePageMeta;
+  const {language} = useLanguage();
+  const {title, description} = getHomePageMeta(language);
   return (
     <Page description={description} title={title}>
       <Header />

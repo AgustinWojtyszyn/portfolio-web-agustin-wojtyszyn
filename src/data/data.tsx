@@ -2,29 +2,19 @@ import {
   AcademicCapIcon,
   ArrowDownTrayIcon,
   BuildingOffice2Icon,
-  CalendarIcon,
   FlagIcon,
   MapIcon,
   SparklesIcon,
 } from '@heroicons/react/24/outline';
 
 import GithubIcon from '../components/Icon/GithubIcon';
-import InstagramIcon from '../components/Icon/InstagramIcon';
+import CodePenIcon from '../components/Icon/CodePenIcon';
 import LinkedInIcon from '../components/Icon/LinkedInIcon';
-import StackOverflowIcon from '../components/Icon/StackOverflowIcon';
-import TwitterIcon from '../components/Icon/TwitterIcon';
-import heroImage from '../images/header-background.webp';
-import porfolioImage1 from '../images/portfolio/portfolio-1.jpg';
-import porfolioImage2 from '../images/portfolio/portfolio-2.jpg';
-import porfolioImage3 from '../images/portfolio/portfolio-3.jpg';
-import porfolioImage4 from '../images/portfolio/portfolio-4.jpg';
-import porfolioImage5 from '../images/portfolio/portfolio-5.jpg';
-import porfolioImage6 from '../images/portfolio/portfolio-6.jpg';
-import porfolioImage7 from '../images/portfolio/portfolio-7.jpg';
-import porfolioImage8 from '../images/portfolio/portfolio-8.jpg';
-import porfolioImage9 from '../images/portfolio/portfolio-9.jpg';
-import porfolioImage10 from '../images/portfolio/portfolio-10.jpg';
-import porfolioImage11 from '../images/portfolio/portfolio-11.jpg';
+import heroImage from '../images/tech.png';
+import porfolioImage1 from '../images/dashboardcatering.png';
+import porfolioImage2 from '../images/arcadereact.png';
+import porfolioImage3 from '../images/password.png';
+import porfolioImage4 from '../images/landingpage.png';
 import profilepic from '../images/profilepic.jpg';
 import testimonialImage from '../images/testimonial.webp';
 import {
@@ -40,13 +30,7 @@ import {
   TimelineItem,
 } from './dataDef';
 
-/**
- * Page meta data
- */
-export const homePageMeta: HomepageMeta = {
-  title: 'React Resume Template',
-  description: "Example site built with Tim Baker's react resume template",
-};
+export type Language = 'es' | 'en';
 
 /**
  * Section definition
@@ -64,310 +48,529 @@ export const SectionId = {
 
 export type SectionId = (typeof SectionId)[keyof typeof SectionId];
 
-/**
- * Hero section
- */
-export const heroData: Hero = {
-  imageSrc: heroImage,
-  name: `I'm Tim Baker.`,
-  description: (
-    <>
-      <p className="prose-sm text-stone-200 sm:prose-base lg:prose-lg">
-        I'm a Victoria based <strong className="text-stone-100">Full Stack Software Engineer</strong>, currently working
-        at <strong className="text-stone-100">Instant Domains</strong> helping build a modern, mobile-first, domain
-        registrar and site builder.
-      </p>
-      <p className="prose-sm text-stone-200 sm:prose-base lg:prose-lg">
-        In my free time time, you can catch me training in <strong className="text-stone-100">Muay Thai</strong>,
-        plucking my <strong className="text-stone-100">banjo</strong>, or exploring beautiful{' '}
-        <strong className="text-stone-100">Vancouver Island</strong>.
-      </p>
-    </>
-  ),
-  actions: [
-    {
-      href: '/assets/resume.pdf',
-      text: 'Resume',
-      primary: true,
-      Icon: ArrowDownTrayIcon,
+interface UiText {
+  nav: Record<SectionId, string>;
+  aboutTitle: string;
+  portfolioTitle: string;
+  educationTitle: string;
+  workTitle: string;
+  skillsTitle: string;
+  skillsIntro: string;
+  contactFormName: string;
+  contactFormEmail: string;
+  contactFormMessage: string;
+  contactFormSubmit: string;
+  footerCreditPrefix: string;
+  footerCopyrightName: string;
+  languageToggle: string;
+  menuButtonAria: string;
+  openSidebarAria: string;
+}
+
+const uiTextByLanguage: Record<Language, UiText> = {
+  es: {
+    nav: {
+      [SectionId.Hero]: 'Inicio',
+      [SectionId.About]: 'Sobre mi',
+      [SectionId.Resume]: 'Curriculum',
+      [SectionId.Portfolio]: 'Portafolio',
+      [SectionId.Skills]: 'Habilidades',
+      [SectionId.Stats]: 'Stats',
+      [SectionId.Testimonials]: 'Testimonios',
+      [SectionId.Contact]: 'Contacto',
     },
-    {
-      href: `#${SectionId.Contact}`,
-      text: 'Contact',
-      primary: false,
+    aboutTitle: 'Sobre mi',
+    portfolioTitle: 'Mira algunos de mis proyectos',
+    educationTitle: 'Educacion',
+    workTitle: 'Trabajo',
+    skillsTitle: 'Habilidades',
+    skillsIntro: 'Resumen de stack tecnologico y herramientas de trabajo.',
+    contactFormName: 'Nombre',
+    contactFormEmail: 'Email',
+    contactFormMessage: 'Mensaje',
+    contactFormSubmit: 'Enviar mensaje',
+    footerCreditPrefix: 'Desarrollado con',
+    footerCopyrightName: 'Agustin Wojtyszyn',
+    languageToggle: 'EN',
+    menuButtonAria: 'Boton de menu',
+    openSidebarAria: 'Abrir menu lateral',
+  },
+  en: {
+    nav: {
+      [SectionId.Hero]: 'Home',
+      [SectionId.About]: 'About',
+      [SectionId.Resume]: 'Resume',
+      [SectionId.Portfolio]: 'Portfolio',
+      [SectionId.Skills]: 'Skills',
+      [SectionId.Stats]: 'Stats',
+      [SectionId.Testimonials]: 'Testimonials',
+      [SectionId.Contact]: 'Contact',
     },
-  ],
+    aboutTitle: 'About me',
+    portfolioTitle: 'Check out some of my work',
+    educationTitle: 'Education',
+    workTitle: 'Work',
+    skillsTitle: 'Skills',
+    skillsIntro: 'Snapshot of my real-world tech stack and tooling.',
+    contactFormName: 'Name',
+    contactFormEmail: 'Email',
+    contactFormMessage: 'Message',
+    contactFormSubmit: 'Send message',
+    footerCreditPrefix: 'Built with',
+    footerCopyrightName: 'Agustin Wojtyszyn',
+    languageToggle: 'ES',
+    menuButtonAria: 'Menu button',
+    openSidebarAria: 'Open sidebar',
+  },
 };
 
 /**
- * About section
+ * Page meta data
  */
-export const aboutData: About = {
-  profileImageSrc: profilepic,
-  description: `Use this bio section as your way of describing yourself and saying what you do, what technologies you like
-  to use or feel most comfortable with, describing your personality, or whatever else you feel like throwing
-  in.`,
-  aboutItems: [
-    {label: 'Location', text: 'Victoria, BC', Icon: MapIcon},
-    {label: 'Age', text: '29', Icon: CalendarIcon},
-    {label: 'Nationality', text: 'Canadian / Irish', Icon: FlagIcon},
-    {label: 'Interests', text: 'Motorcycles, Muay Thai, Banjos', Icon: SparklesIcon},
-    {label: 'Study', text: 'University of Victoria', Icon: AcademicCapIcon},
-    {label: 'Employment', text: 'Instant Domains, inc.', Icon: BuildingOffice2Icon},
-  ],
+const homePageMetaByLanguage: Record<Language, HomepageMeta> = {
+  es: {
+    title: 'Portfolio - Agustin Wojtyszyn',
+    description: 'Portfolio full stack de Agustin Wojtyszyn',
+  },
+  en: {
+    title: 'Portfolio - Agustin Wojtyszyn',
+    description: 'Full stack portfolio of Agustin Wojtyszyn',
+  },
 };
 
-/**
- * Skills section
- */
-export const skills: SkillGroup[] = [
-  {
-    name: 'Spoken languages',
-    skills: [
-      {
-        name: 'English',
-        level: 10,
-      },
-      {
-        name: 'French',
-        level: 4,
-      },
-      {
-        name: 'Spanish',
-        level: 3,
-      },
-    ],
-  },
-  {
-    name: 'Frontend development',
-    skills: [
-      {
-        name: 'React',
-        level: 9,
-      },
-      {
-        name: 'Typescript',
-        level: 7,
-      },
-      {
-        name: 'GraphQL',
-        level: 6,
-      },
-    ],
-  },
-  {
-    name: 'Backend development',
-    skills: [
-      {
-        name: 'Node.js',
-        level: 8,
-      },
-      {
-        name: 'Rust',
-        level: 5,
-      },
-      {
-        name: 'Golang',
-        level: 4,
-      },
-    ],
-  },
-  {
-    name: 'Mobile development',
-    skills: [
-      {
-        name: 'React Native',
-        level: 9,
-      },
-      {
-        name: 'Flutter',
-        level: 4,
-      },
-      {
-        name: 'Swift',
-        level: 3,
-      },
-    ],
-  },
-];
-
-/**
- * Portfolio section
- */
-export const portfolioItems: PortfolioItem[] = [
-  {
-    title: 'Project title 1',
-    description: 'Give a short description of your project here.',
-    url: 'https://reactresume.com',
-    image: porfolioImage1,
-  },
-  {
-    title: 'Project title 2',
-    description: 'Give a short description of your project here.',
-    url: 'https://reactresume.com',
-    image: porfolioImage2,
-  },
-  {
-    title: 'Project title 3',
-    description: 'Give a short description of your project here.',
-    url: 'https://reactresume.com',
-    image: porfolioImage3,
-  },
-  {
-    title: 'Project title 4',
-    description: 'Give a short description of your project here.',
-    url: 'https://reactresume.com',
-    image: porfolioImage4,
-  },
-  {
-    title: 'Project title 5',
-    description: 'Give a short description of your project here.',
-    url: 'https://reactresume.com',
-    image: porfolioImage5,
-  },
-  {
-    title: 'Project title 6',
-    description: 'Give a short description of your project here.',
-    url: 'https://reactresume.com',
-    image: porfolioImage6,
-  },
-  {
-    title: 'Project title 7',
-    description: 'Give a short description of your project here.',
-    url: 'https://reactresume.com',
-    image: porfolioImage7,
-  },
-  {
-    title: 'Project title 8',
-    description: 'Give a short description of your project here.',
-    url: 'https://reactresume.com',
-    image: porfolioImage8,
-  },
-  {
-    title: 'Project title 9',
-    description: 'Give a short description of your project here.',
-    url: 'https://reactresume.com',
-    image: porfolioImage9,
-  },
-  {
-    title: 'Project title 10',
-    description: 'Give a short description of your project here.',
-    url: 'https://reactresume.com',
-    image: porfolioImage10,
-  },
-  {
-    title: 'Project title 11',
-    description: 'Give a short description of your project here.',
-    url: 'https://reactresume.com',
-    image: porfolioImage11,
-  },
-];
-
-/**
- * Resume section -- TODO: Standardize resume contact format or offer MDX
- */
-export const education: TimelineItem[] = [
-  {
-    date: 'April 2007',
-    location: 'Clown college',
-    title: 'Masters in Beer tasting',
-    content: <p>Describe your experience at school, what you learned, what useful skills you have acquired etc.</p>,
-  },
-  {
-    date: 'March 2003',
-    location: 'School of Business',
-    title: 'What did you study 101',
-    content: <p>Describe your experience at school, what you learned, what useful skills you have acquired etc.</p>,
-  },
-];
-
-export const experience: TimelineItem[] = [
-  {
-    date: 'March 2010 - Present',
-    location: 'Awesome Development Company',
-    title: 'Senior UX Engineer',
-    content: (
-      <p>
-        Describe work, special projects, notable achievements, what technologies you have been working with, and
-        anything else that would be useful for an employer to know.
-      </p>
+const heroDataByLanguage: Record<Language, Hero> = {
+  es: {
+    imageSrc: heroImage,
+    name: 'Agustín Wojtyszyn',
+    description: (
+      <>
+        <p className="prose-sm text-stone-200 sm:prose-base lg:prose-lg">
+          Hola! Mi nombre es Agustín. Soy un{' '}
+          <strong className="text-stone-100">desarrollador web full stack</strong>, en constante formacion.
+        </p>
+        <p className="prose-sm text-stone-200 sm:prose-base lg:prose-lg">
+          En mi perfil de{' '}
+          <a className="text-blue-400 underline" href="https://github.com/AgustinWojtyszyn">
+            GitHub
+          </a>{' '}
+          se alojan algunos de mis proyectos. Ademas, alli podras ver mi perfil de{' '}
+          <a className="text-blue-400 underline" href="https://codepen.io/Boiti99">
+            CodePen
+          </a>
+          , con proyectos dedicados a HTML, CSS y JavaScript.
+        </p>
+      </>
     ),
+    actions: [
+      {
+        href: 'mailto:agustinwojtyszyn99@gmail.com',
+        text: 'Email',
+        primary: true,
+        Icon: ArrowDownTrayIcon,
+      },
+      {
+        href: `#${SectionId.Contact}`,
+        text: 'Contacto',
+        primary: false,
+      },
+    ],
   },
-  {
-    date: 'March 2007 - February 2010',
-    location: 'Garage Startup Studio',
-    title: 'Junior bug fixer',
-    content: (
-      <p>
-        Describe work, special projects, notable achievements, what technologies you have been working with, and
-        anything else that would be useful for an employer to know.
-      </p>
+  en: {
+    imageSrc: heroImage,
+    name: 'Agustin Wojtyszyn',
+    description: (
+      <>
+        <p className="prose-sm text-stone-200 sm:prose-base lg:prose-lg">
+          Hi! My name is Agustin and I am 25 years old. I am a{' '}
+          <strong className="text-stone-100">full stack web developer</strong>, always learning.
+        </p>
+        <p className="prose-sm text-stone-200 sm:prose-base lg:prose-lg">
+          You can check my{' '}
+          <a className="text-blue-400 underline" href="https://github.com/AgustinWojtyszyn">
+            GitHub
+          </a>{' '}
+          profile where I host some of my projects. There you will also find my{' '}
+          <a className="text-blue-400 underline" href="https://codepen.io/Boiti99">
+            CodePen
+          </a>{' '}
+          profile focused on HTML, CSS, and JavaScript projects.
+        </p>
+      </>
     ),
+    actions: [
+      {
+        href: 'mailto:agustinwojtyszyn99@gmail.com',
+        text: 'Email',
+        primary: true,
+        Icon: ArrowDownTrayIcon,
+      },
+      {
+        href: `#${SectionId.Contact}`,
+        text: 'Contact',
+        primary: false,
+      },
+    ],
   },
-];
+};
 
-/**
- * Testimonial section
- */
-export const testimonial: TestimonialSection = {
-  imageSrc: testimonialImage,
-  testimonials: [
+const aboutDataByLanguage: Record<Language, About> = {
+  es: {
+    profileImageSrc: profilepic,
+    description:
+      'Desarrollador web full stack con experiencia en proyectos reales y una fuerte orientacion al aprendizaje continuo.',
+    aboutItems: [
+      {label: 'Ubicacion', text: 'Argentina', Icon: MapIcon},
+      {label: 'Nacionalidad', text: 'Argentina', Icon: FlagIcon},
+      {label: 'Intereses', text: 'Tecnologia, UX/UI y productos digitales', Icon: SparklesIcon},
+      {label: 'Formacion', text: 'Conquer Blocks', Icon: AcademicCapIcon},
+      {label: 'Actualidad', text: 'Full Stack Developer en Servifood', Icon: BuildingOffice2Icon},
+    ],
+  },
+  en: {
+    profileImageSrc: profilepic,
+    description: 'Full stack web developer with real-world project experience and a strong continuous-learning mindset.',
+    aboutItems: [
+      {label: 'Location', text: 'Argentina', Icon: MapIcon},
+      {label: 'Nationality', text: 'Argentinian', Icon: FlagIcon},
+      {label: 'Interests', text: 'Technology, UX/UI and digital products', Icon: SparklesIcon},
+      {label: 'Education', text: 'Conquer Blocks', Icon: AcademicCapIcon},
+      {label: 'Current role', text: 'Full Stack Developer at Servifood', Icon: BuildingOffice2Icon},
+    ],
+  },
+};
+
+const skillsByLanguage: Record<Language, SkillGroup[]> = {
+  es: [
     {
-      name: 'John Doe',
-      text: 'Use this as an opportunity to promote what it is like to work with you. High value testimonials include ones from current or past co-workers, managers, or from happy clients.',
-      image: 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/169.jpg',
+      name: 'Languages',
+      skills: [
+        {name: 'Python', level: 1},
+        {name: 'JavaScript', level: 1},
+        {name: 'SQL', level: 1},
+      ],
     },
     {
-      name: 'Jane Doe',
-      text: 'Here you should write some nice things that someone has said about you. Encourage them to be specific and include important details (notes about a project you were on together, impressive quality produced, etc).',
-      image: 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/14.jpg',
+      name: 'Frontend',
+      skills: [
+        {name: 'HTML5', level: 1},
+        {name: 'CSS3', level: 1},
+        {name: 'JavaScript', level: 1},
+        {name: 'Responsive Design', level: 1},
+        {name: 'UX/UI', level: 1},
+      ],
     },
     {
-      name: 'Someone else',
-      text: 'Add several of these, and keep them as fresh as possible, but be sure to focus on quality testimonials with strong highlights of your skills/work ethic.',
-      image: 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/69.jpg',
+      name: 'Backend',
+      skills: [
+        {name: 'Supabase', level: 1},
+        {name: 'PostgreSQL', level: 1},
+        {name: 'Node.js', level: 1},
+        {name: 'REST APIs', level: 1},
+        {name: 'Authentication / Authorization', level: 1},
+        {name: 'Row Level Security (RLS)', level: 1},
+      ],
+    },
+    {
+      name: 'Tools',
+      skills: [
+        {name: 'Git', level: 1},
+        {name: 'GitHub', level: 1},
+        {name: 'Visual Studio Code', level: 1},
+        {name: 'Deployment & Production Support', level: 1},
+      ],
+    },
+  ],
+  en: [
+    {
+      name: 'Languages',
+      skills: [
+        {name: 'Python', level: 1},
+        {name: 'JavaScript', level: 1},
+        {name: 'SQL', level: 1},
+      ],
+    },
+    {
+      name: 'Frontend',
+      skills: [
+        {name: 'HTML5', level: 1},
+        {name: 'CSS3', level: 1},
+        {name: 'JavaScript', level: 1},
+        {name: 'Responsive Design', level: 1},
+        {name: 'UX/UI', level: 1},
+      ],
+    },
+    {
+      name: 'Backend',
+      skills: [
+        {name: 'Supabase', level: 1},
+        {name: 'PostgreSQL', level: 1},
+        {name: 'Node.js', level: 1},
+        {name: 'REST APIs', level: 1},
+        {name: 'Authentication / Authorization', level: 1},
+        {name: 'Row Level Security (RLS)', level: 1},
+      ],
+    },
+    {
+      name: 'Tools',
+      skills: [
+        {name: 'Git', level: 1},
+        {name: 'GitHub', level: 1},
+        {name: 'Visual Studio Code', level: 1},
+        {name: 'Deployment & Production Support', level: 1},
+      ],
     },
   ],
 };
 
-/**
- * Contact section
- */
-
-export const contact: ContactSection = {
-  headerText: 'Get in touch.',
-  description: 'Here is a good spot for a message to your readers to let them know how best to reach out to you.',
-  items: [
+const portfolioItemsByLanguage: Record<Language, PortfolioItem[]> = {
+  es: [
     {
-      type: ContactType.Email,
-      text: 'reachout@timbaker.me',
-      href: 'mailto:reachout@timbaker.me',
+      title: 'Servi Food - Plataforma de gestion de pedidos',
+      description:
+        'Plataforma web para gestion diaria de pedidos de catering corporativo. Registra, organiza y exporta pedidos por empresa para optimizar logistica y control operativo.',
+      url: 'https://github.com/AgustinWojtyszyn/Servifood-order-system',
+      image: porfolioImage1,
     },
     {
-      type: ContactType.Location,
-      text: 'Victoria BC, Canada',
-      href: 'https://www.google.ca/maps/place/Victoria,+BC/@48.4262362,-123.376775,14z',
+      title: 'Arcade Web - Coleccion de mini-juegos',
+      description:
+        'Aplicacion web con mini-juegos interactivos en JavaScript, con arquitectura modular e integracion de APIs externas.',
+      url: 'https://arcade.agustinwojtyszyn.com/',
+      image: porfolioImage2,
     },
     {
-      type: ContactType.Instagram,
-      text: '@tbakerx',
-      href: 'https://www.instagram.com/tbakerx/',
+      title: 'Generador de contrasenas seguras',
+      description:
+        'Aplicacion en Python para generar contrasenas robustas con combinaciones aleatorias de caracteres, numeros y simbolos.',
+      url: 'https://github.com/AgustinWojtyszyn/Secure-password-generator',
+      image: porfolioImage3,
     },
     {
-      type: ContactType.Github,
-      text: 'tbakerx',
-      href: 'https://github.com/tbakerx',
+      title: 'Sitios corporativos y landing pages',
+      description:
+        'Desarrollo de sitios estaticos y landing pages a partir de disenos profesionales y maquetas Figma, con foco en fidelidad visual y responsive design.',
+      url: 'https://github.com/AgustinWojtyszyn/app_tracking_laboral_sf',
+      image: porfolioImage4,
     },
   ],
+  en: [
+    {
+      title: 'Servi Food - Order management platform',
+      description:
+        'Web platform for daily management of corporate catering orders. It registers, organizes, and exports orders by company to improve logistics and operational control.',
+      url: 'https://github.com/AgustinWojtyszyn/Servifood-order-system',
+      image: porfolioImage1,
+    },
+    {
+      title: 'Arcade Web - Mini-game collection',
+      description:
+        'Web application with interactive JavaScript mini-games, modular architecture, and external API integration.',
+      url: 'https://arcade.agustinwojtyszyn.com/',
+      image: porfolioImage2,
+    },
+    {
+      title: 'Secure password generator',
+      description:
+        'Python application that generates strong passwords using random combinations of characters, numbers, and symbols.',
+      url: 'https://github.com/AgustinWojtyszyn/Secure-password-generator',
+      image: porfolioImage3,
+    },
+    {
+      title: 'Corporate websites and landing pages',
+      description:
+        'Development of static websites and landing pages from professional designs and Figma mockups, focused on visual fidelity and responsive behavior.',
+      url: 'https://github.com/AgustinWojtyszyn/app_tracking_laboral_sf',
+      image: porfolioImage4,
+    },
+  ],
+};
+
+const educationByLanguage: Record<Language, TimelineItem[]> = {
+  es: [
+    {
+      date: 'Agosto 2024 - Diciembre 2025',
+      location: 'Conquer Blocks',
+      title: 'Full Stack Web Developer',
+      content: (
+        <div className="flex flex-col gap-y-4">
+          <p>
+            Formacion intensiva en desarrollo web full stack enfocada en construccion de aplicaciones web modernas.
+          </p>
+          <ul className="list-disc space-y-1 pl-5">
+            <li>Aprendizaje de frontend responsive y buenas practicas de UI.</li>
+            <li>Backend con logica de negocio y arquitectura de servicios.</li>
+            <li>Bases de datos SQL, autenticacion de usuarios y despliegue en produccion.</li>
+          </ul>
+        </div>
+      ),
+    },
+  ],
+  en: [
+    {
+      date: 'August 2024 - December 2025',
+      location: 'Conquer Blocks',
+      title: 'Full Stack Web Developer',
+      content: (
+        <div className="flex flex-col gap-y-4">
+          <p>Intensive full stack web development training focused on building modern web applications.</p>
+          <ul className="list-disc space-y-1 pl-5">
+            <li>Covered responsive frontend development and UI best practices.</li>
+            <li>Learned backend business logic and service architecture.</li>
+            <li>Worked with SQL databases, user authentication, and production deployment.</li>
+          </ul>
+        </div>
+      ),
+    },
+  ],
+};
+
+const experienceByLanguage: Record<Language, TimelineItem[]> = {
+  es: [
+    {
+      date: 'Agosto 2024 - Actualidad',
+      location: 'Servifood',
+      title: 'Full Stack Web Developer',
+      content: (
+        <div className="flex flex-col gap-y-4">
+          <p>
+            Desarrollo y mantenimiento de una plataforma web de gestion de pedidos y panel administrativo para una
+            empresa de servicios gastronomicos.
+          </p>
+          <p className="font-semibold">Principales responsabilidades:</p>
+          <ul className="list-disc space-y-1 pl-5">
+            <li>Desarrollo de frontend responsive utilizando HTML, CSS y JavaScript.</li>
+            <li>Implementacion de autenticacion y recuperacion de contrasena con Supabase Auth.</li>
+            <li>
+              Gestion de roles y permisos (admin / user) mediante politicas Row Level Security (RLS) en PostgreSQL.
+            </li>
+            <li>Modelado de datos y consultas SQL avanzadas (JOINs, filtros y optimizacion).</li>
+            <li>Integracion de base de datos con paneles administrativos y reportes operativos.</li>
+            <li>
+              Deploy, monitoreo y mantenimiento en produccion, resolucion de bugs y mejoras de experiencia de usuario.
+            </li>
+          </ul>
+        </div>
+      ),
+    },
+  ],
+  en: [
+    {
+      date: 'August 2024 - Present',
+      location: 'Servifood',
+      title: 'Full Stack Web Developer',
+      content: (
+        <div className="flex flex-col gap-y-4">
+          <p>
+            Development and maintenance of a web-based order management platform and admin dashboard for a food service
+            company.
+          </p>
+          <p className="font-semibold">Main responsibilities:</p>
+          <ul className="list-disc space-y-1 pl-5">
+            <li>Built responsive frontend interfaces using HTML, CSS, and JavaScript.</li>
+            <li>Implemented authentication and password recovery with Supabase Auth.</li>
+            <li>Managed roles and permissions (admin / user) with PostgreSQL Row Level Security (RLS).</li>
+            <li>Designed data models and wrote advanced SQL queries (joins, filters, optimization).</li>
+            <li>Integrated the database with admin dashboards and operational reports.</li>
+            <li>Handled deployment, production monitoring, bug fixing, and UX improvements.</li>
+          </ul>
+        </div>
+      ),
+    },
+  ],
+};
+
+const testimonialByLanguage: Record<Language, TestimonialSection> = {
+  es: {
+    imageSrc: testimonialImage,
+    testimonials: [
+      {
+        name: 'Feedback de proyecto',
+        text: 'Profesional orientado a resultados, con foco en calidad tecnica y entrega continua.',
+      },
+      {
+        name: 'Trabajo colaborativo',
+        text: 'Buena comunicacion, criterio para resolver problemas y capacidad para mejorar productos en produccion.',
+      },
+    ],
+  },
+  en: {
+    imageSrc: testimonialImage,
+    testimonials: [
+      {
+        name: 'Project feedback',
+        text: 'Results-oriented professional with strong focus on technical quality and continuous delivery.',
+      },
+      {
+        name: 'Team collaboration',
+        text: 'Clear communication, problem-solving mindset, and ability to improve production products.',
+      },
+    ],
+  },
+};
+
+const contactByLanguage: Record<Language, ContactSection> = {
+  es: {
+    headerText: 'Contacto',
+    description: 'Puedes contactarme por email o LinkedIn para oportunidades laborales y colaboraciones.',
+    items: [
+      {
+        type: ContactType.Email,
+        text: 'agustinwojtyszyn99@gmail.com',
+        href: 'mailto:agustinwojtyszyn99@gmail.com',
+      },
+      {
+        type: ContactType.Github,
+        text: 'AgustinWojtyszyn',
+        href: 'https://github.com/AgustinWojtyszyn',
+      },
+      {
+        type: ContactType.LinkedIn,
+        text: 'Agustin Wojtyszyn',
+        href: 'https://www.linkedin.com/in/agustin-wojtyszyn-87b524247/',
+      },
+    ],
+  },
+  en: {
+    headerText: 'Contact',
+    description: 'You can reach me by email or LinkedIn for job opportunities and collaborations.',
+    items: [
+      {
+        type: ContactType.Email,
+        text: 'agustinwojtyszyn99@gmail.com',
+        href: 'mailto:agustinwojtyszyn99@gmail.com',
+      },
+      {
+        type: ContactType.Github,
+        text: 'AgustinWojtyszyn',
+        href: 'https://github.com/AgustinWojtyszyn',
+      },
+      {
+        type: ContactType.LinkedIn,
+        text: 'Agustin Wojtyszyn',
+        href: 'https://www.linkedin.com/in/agustin-wojtyszyn-87b524247/',
+      },
+    ],
+  },
 };
 
 /**
  * Social items
  */
 export const socialLinks: Social[] = [
-  {label: 'Github', Icon: GithubIcon, href: 'https://github.com/tbakerx'},
-  {label: 'Stack Overflow', Icon: StackOverflowIcon, href: 'https://stackoverflow.com/users/8553186/tim-baker'},
-  {label: 'LinkedIn', Icon: LinkedInIcon, href: 'https://www.linkedin.com/in/timbakerx/'},
-  {label: 'Instagram', Icon: InstagramIcon, href: 'https://www.instagram.com/reactresume/'},
-  {label: 'Twitter', Icon: TwitterIcon, href: 'https://twitter.com/TimBakerx'},
+  {label: 'Github', Icon: GithubIcon, href: 'https://github.com/AgustinWojtyszyn'},
+  {label: 'LinkedIn', Icon: LinkedInIcon, href: 'https://www.linkedin.com/in/agustin-wojtyszyn-87b524247/'},
+  {label: 'CodePen', Icon: CodePenIcon, href: 'https://codepen.io/Boiti99'},
 ];
+
+export const defaultLanguage: Language = 'es';
+
+export const getUiText = (language: Language): UiText => uiTextByLanguage[language];
+export const getHomePageMeta = (language: Language): HomepageMeta => homePageMetaByLanguage[language];
+export const getHeroData = (language: Language): Hero => heroDataByLanguage[language];
+export const getAboutData = (language: Language): About => aboutDataByLanguage[language];
+export const getSkills = (language: Language): SkillGroup[] => skillsByLanguage[language];
+export const getPortfolioItems = (language: Language): PortfolioItem[] => portfolioItemsByLanguage[language];
+export const getEducation = (language: Language): TimelineItem[] => educationByLanguage[language];
+export const getExperience = (language: Language): TimelineItem[] => experienceByLanguage[language];
+export const getTestimonial = (language: Language): TestimonialSection => testimonialByLanguage[language];
+export const getContact = (language: Language): ContactSection => contactByLanguage[language];

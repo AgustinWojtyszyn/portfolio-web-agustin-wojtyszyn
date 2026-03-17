@@ -2,7 +2,8 @@ import classNames from 'classnames';
 import {FC, memo, UIEventHandler, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 
 import {isApple, isMobile} from '../../config';
-import {SectionId, testimonial} from '../../data/data';
+import {useLanguage} from '../../context/LanguageContext';
+import {getTestimonial, SectionId} from '../../data/data';
 import {Testimonial} from '../../data/dataDef';
 import useInterval from '../../hooks/useInterval';
 import useWindow from '../../hooks/useWindow';
@@ -10,6 +11,7 @@ import QuoteIcon from '../Icon/QuoteIcon';
 import Section from '../Layout/Section';
 
 const Testimonials: FC = memo(() => {
+  const {language} = useLanguage();
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [scrollValue, setScrollValue] = useState(0);
   const [parallaxEnabled, setParallaxEnabled] = useState(false);
@@ -19,7 +21,7 @@ const Testimonials: FC = memo(() => {
 
   const {width} = useWindow();
 
-  const {imageSrc, testimonials} = testimonial;
+  const {imageSrc, testimonials} = getTestimonial(language);
 
   const resolveSrc = useMemo(() => {
     if (!imageSrc) return undefined;
@@ -73,13 +75,14 @@ const Testimonials: FC = memo(() => {
     <Section noPadding sectionId={SectionId.Testimonials}>
       <div
         className={classNames(
-          'flex w-full items-center justify-center bg-cover bg-center px-4 py-16 md:py-24 lg:px-8',
+          'relative flex w-full items-center justify-center bg-cover bg-center px-4 py-16 md:py-24 lg:px-8',
           parallaxEnabled && 'bg-fixed',
           {'bg-neutral-700': !imageSrc},
         )}
         style={imageSrc ? {backgroundImage: `url(${resolveSrc}`} : undefined}>
-        <div className="z-10 w-full max-w-screen-md px-4 lg:px-0">
-          <div className="flex flex-col items-center gap-y-6 rounded-xl bg-gray-800/60 p-6 shadow-lg">
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-900/70 to-slate-950/85" />
+        <div className="z-10 w-full max-w-screen-md px-4 lg:px-0" data-reveal>
+          <div className="flex flex-col items-center gap-y-6 rounded-xl border border-white/15 bg-gray-900/80 p-6 shadow-2xl backdrop-blur-sm">
             <div
               className="no-scrollbar flex w-full touch-pan-x snap-x snap-mandatory gap-x-6 overflow-x-auto scroll-smooth"
               onScroll={handleScroll}
@@ -117,7 +120,7 @@ const Testimonial: FC<{testimonial: Testimonial; isActive: boolean}> = memo(
   ({testimonial: {text, name, image}, isActive}) => (
     <div
       className={classNames(
-        'flex w-full shrink-0 snap-start snap-always flex-col items-start gap-y-4 p-2 transition-opacity duration-1000 sm:flex-row sm:gap-x-6',
+        'flex w-full shrink-0 snap-start snap-always flex-col items-start gap-y-4 rounded-lg bg-black/25 p-3 transition-opacity duration-1000 sm:flex-row sm:gap-x-6',
         isActive ? 'opacity-100' : 'opacity-0',
       )}>
       {image ? (

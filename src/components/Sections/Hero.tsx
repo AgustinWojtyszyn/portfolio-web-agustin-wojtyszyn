@@ -1,28 +1,29 @@
 import {ChevronDownIcon} from '@heroicons/react/24/outline';
 import classNames from 'classnames';
-import Image from 'next/image';
 import {FC, memo} from 'react';
 
-import {heroData, SectionId} from '../../data/data';
+import {useLanguage} from '../../context/LanguageContext';
+import {getHeroData, SectionId} from '../../data/data';
 import Section from '../Layout/Section';
 import Socials from '../Socials';
 
 const Hero: FC = memo(() => {
-  const {imageSrc, name, description, actions} = heroData;
+  const {language} = useLanguage();
+  const {name, description, actions} = getHeroData(language);
 
   return (
     <Section noPadding sectionId={SectionId.Hero}>
       <div className="relative flex h-screen w-full items-center justify-center">
-        <Image
-          alt={`${name}-image`}
-          className="absolute z-0 h-full w-full object-cover"
-          placeholder="blur"
-          priority
-          src={imageSrc}
+        <iframe
+          aria-hidden="true"
+          className="absolute z-0 h-full w-full border-0"
+          src="/animated-network/index.html"
+          tabIndex={-1}
+          title="Animated network background"
         />
-        <div className="z-10  max-w-screen-lg px-4 lg:px-0">
-          <div className="flex flex-col items-center gap-y-6 rounded-xl bg-gray-800/40 p-6 text-center shadow-lg backdrop-blur-sm">
-            <h1 className="text-4xl font-bold text-white sm:text-5xl lg:text-7xl">{name}</h1>
+        <div className="z-10 max-w-screen-lg px-4 lg:px-0" data-reveal>
+          <div className="hero-card flex flex-col items-center gap-y-6 rounded-xl p-6 text-center">
+            <h1 className="hero-title text-4xl font-bold text-white sm:text-5xl lg:text-7xl">{name}</h1>
             {description}
             <div className="flex gap-x-4 text-neutral-100">
               <Socials />

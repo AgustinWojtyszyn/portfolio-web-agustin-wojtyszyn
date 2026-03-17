@@ -5,17 +5,16 @@ import {TimelineItem} from '../../../data/dataDef';
 const TimelineItem: FC<{item: TimelineItem}> = memo(({item}) => {
   const {title, date, location, content} = item;
   return (
-    <div className="flex flex-col pb-8 text-center last:pb-0 md:text-left">
-      <div className="flex flex-col pb-4">
-        <h2 className="text-xl font-bold">{title}</h2>
-        <div className="flex items-center justify-center gap-x-2 md:justify-start">
-          <span className="flex-1 text-sm font-medium italic sm:flex-none">{location}</span>
-          <span>•</span>
-          <span className="flex-1 text-sm sm:flex-none">{date}</span>
+    <article className="resume-card rounded-xl border border-neutral-200 bg-white px-5 py-6 text-left shadow-sm sm:px-6" data-reveal>
+      <div className="mb-4 flex flex-col gap-y-2 border-b border-neutral-200 pb-4">
+        <h3 className="resume-card-title text-xl font-bold leading-tight text-neutral-900">{title}</h3>
+        <div className="flex flex-col gap-y-1 sm:flex-row sm:items-center sm:justify-between">
+          <span className="resume-card-meta text-sm font-semibold text-neutral-700">{location}</span>
+          <span className="resume-card-date text-sm font-medium text-neutral-500">{date}</span>
         </div>
       </div>
-      {content}
-    </div>
+      <div className="resume-card-content max-w-3xl space-y-4 text-[15px] leading-7 text-neutral-700">{content}</div>
+    </article>
   );
 });
 

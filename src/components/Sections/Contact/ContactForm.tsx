@@ -1,4 +1,6 @@
 import {FC, memo, useCallback, useMemo, useState} from 'react';
+import {useLanguage} from '../../../context/LanguageContext';
+import {getUiText} from '../../../data/data';
 
 interface FormData {
   name: string;
@@ -7,6 +9,9 @@ interface FormData {
 }
 
 const ContactForm: FC = memo(() => {
+  const {language} = useLanguage();
+  const uiText = getUiText(language);
+
   const defaultData = useMemo(
     () => ({
       name: '',
@@ -45,13 +50,13 @@ const ContactForm: FC = memo(() => {
 
   return (
     <form className="grid min-h-[320px] grid-cols-1 gap-y-4" method="POST" onSubmit={handleSendMessage}>
-      <input className={inputClasses} name="name" onChange={onChange} placeholder="Name" required type="text" />
+      <input className={inputClasses} name="name" onChange={onChange} placeholder={uiText.contactFormName} required type="text" />
       <input
         autoComplete="email"
         className={inputClasses}
         name="email"
         onChange={onChange}
-        placeholder="Email"
+        placeholder={uiText.contactFormEmail}
         required
         type="email"
       />
@@ -60,7 +65,7 @@ const ContactForm: FC = memo(() => {
         maxLength={250}
         name="message"
         onChange={onChange}
-        placeholder="Message"
+        placeholder={uiText.contactFormMessage}
         required
         rows={6}
       />
@@ -68,7 +73,7 @@ const ContactForm: FC = memo(() => {
         aria-label="Submit contact form"
         className="w-max rounded-full border-2 border-orange-600 bg-stone-900 px-4 py-2 text-sm font-medium text-white shadow-md outline-none hover:bg-stone-800 focus:ring-2 focus:ring-orange-600 focus:ring-offset-2 focus:ring-offset-stone-800"
         type="submit">
-        Send Message
+        {uiText.contactFormSubmit}
       </button>
     </form>
   );

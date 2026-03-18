@@ -7,15 +7,15 @@ import {
   SparklesIcon,
 } from '@heroicons/react/24/outline';
 
-import GithubIcon from '../components/Icon/GithubIcon';
 import CodePenIcon from '../components/Icon/CodePenIcon';
+import GithubIcon from '../components/Icon/GithubIcon';
 import LinkedInIcon from '../components/Icon/LinkedInIcon';
-import heroImage from '../images/tech.png';
-import porfolioImage1 from '../images/dashboardcatering.png';
 import porfolioImage2 from '../images/arcadereact.png';
-import porfolioImage3 from '../images/password.png';
+import porfolioImage1 from '../images/dashboardcatering.png';
 import porfolioImage4 from '../images/landingpage.png';
+import porfolioImage3 from '../images/password.png';
 import profilepic from '../images/profilepic.jpg';
+import heroImage from '../images/tech.png';
 import testimonialImage from '../images/testimonial.webp';
 import {
   About,
@@ -145,8 +145,8 @@ const heroDataByLanguage: Record<Language, Hero> = {
     description: (
       <>
         <p className="prose-sm text-stone-200 sm:prose-base lg:prose-lg">
-          Hola! Mi nombre es Agustín. Soy un{' '}
-          <strong className="text-stone-100">desarrollador web full stack</strong>, en constante formacion.
+          Hola! Mi nombre es Agustín. Soy un <strong className="text-stone-100">desarrollador web full stack</strong>,
+          en constante formacion.
         </p>
         <p className="prose-sm text-stone-200 sm:prose-base lg:prose-lg">
           En mi perfil de{' '}
@@ -228,7 +228,8 @@ const aboutDataByLanguage: Record<Language, About> = {
   },
   en: {
     profileImageSrc: profilepic,
-    description: 'Full stack web developer with real-world project experience and a strong continuous-learning mindset.',
+    description:
+      'Full stack web developer with real-world project experience and a strong continuous-learning mindset.',
     aboutItems: [
       {label: 'Location', text: 'Argentina', Icon: MapIcon},
       {label: 'Nationality', text: 'Argentinian', Icon: FlagIcon},
@@ -409,9 +410,7 @@ const educationByLanguage: Record<Language, TimelineItem[]> = {
       title: 'Full Stack Web Developer',
       content: (
         <div className="flex flex-col gap-y-4">
-          <p>
-            Formacion intensiva en desarrollo web full stack enfocada en construccion de aplicaciones web modernas.
-          </p>
+          <p>Formacion intensiva en desarrollo web full stack enfocada en construccion de aplicaciones web modernas.</p>
           <ul className="list-disc space-y-1 pl-5">
             <li>Aprendizaje de frontend responsive y buenas practicas de UI.</li>
             <li>Backend con logica de negocio y arquitectura de servicios.</li>

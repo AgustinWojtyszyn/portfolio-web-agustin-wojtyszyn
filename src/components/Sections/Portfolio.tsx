@@ -51,8 +51,10 @@ const Portfolio: FC = memo(() => {
   return (
     <Section className="bg-neutral-800" sectionId={SectionId.Portfolio}>
       <div className="portfolio-shell flex flex-col gap-y-8" data-reveal>
-        <h2 className="self-center text-xl font-bold text-white">{uiText.portfolioTitle}</h2>
-        <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+        <h2 className="self-center text-2xl font-semibold tracking-[0.04em] text-white sm:text-3xl">
+          {uiText.portfolioTitle}
+        </h2>
+        <div className="grid w-full grid-cols-1 gap-7 md:grid-cols-2">
           {portfolioItems.map(item => (
             <ProjectCard item={item} key={item.title} labels={labels} />
           ))}
@@ -73,39 +75,46 @@ const ProjectCard: FC<{
   const {description, image, stack, title} = item;
 
   return (
-    <article className="project-panel group overflow-hidden rounded-2xl border border-white/10 bg-slate-950/55" data-reveal>
+    <article
+      className="project-panel group overflow-hidden rounded-2xl border border-white/10 bg-slate-950/55"
+      data-reveal>
       <div className="grid h-full gap-0">
         <div className="project-visual relative aspect-[16/10] overflow-hidden">
           <Image
             alt={title}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.045]"
             placeholder="blur"
             src={image}
           />
           <div className="project-visual-overlay absolute inset-0" />
         </div>
 
-        <div className="flex flex-col gap-y-4 p-5 sm:p-6 lg:p-7">
-          <h3 className="text-xl text-white">{title}</h3>
-          <p className="text-sm leading-6 text-slate-200/90">{description}</p>
+        <div className="flex flex-col gap-y-4 p-6 sm:p-7 lg:p-8">
+          <h3 className="text-xl font-semibold text-white">{title}</h3>
+          <p className="text-sm leading-7 text-slate-200/90">{description}</p>
 
           {!!stack?.length && (
             <ul className="flex flex-wrap gap-2">
               {stack.map(tech => (
-                <li className="project-stack-pill rounded-full px-3 py-1 text-xs text-slate-100" key={`${title}-${tech}`}>
+                <li
+                  className="project-stack-pill rounded-full px-3 py-1 text-xs text-slate-100"
+                  key={`${title}-${tech}`}>
                   {tech}
                 </li>
               ))}
             </ul>
           )}
 
-          <div className="mt-auto flex flex-wrap gap-3 pt-2">
+          <div className="project-cta-wrap mt-auto flex flex-wrap gap-3 pt-3">
             {ctas.map(cta => (
               <a
-                className={classNames('project-cta inline-flex items-center gap-x-2 rounded-full px-4 py-2 text-sm font-semibold', {
-                  'project-cta-primary': cta.kind === 'demo' || cta.kind === 'default',
-                  'project-cta-secondary': cta.kind === 'repo' || cta.kind === 'details',
-                })}
+                className={classNames(
+                  'project-cta ui-btn inline-flex items-center gap-x-2 rounded-full px-4 py-2 text-sm font-semibold',
+                  {
+                    'project-cta-primary': cta.kind === 'demo' || cta.kind === 'default',
+                    'project-cta-secondary': cta.kind === 'repo' || cta.kind === 'details',
+                  },
+                )}
                 href={cta.href}
                 key={`${title}-${cta.label}`}
                 rel="noreferrer"

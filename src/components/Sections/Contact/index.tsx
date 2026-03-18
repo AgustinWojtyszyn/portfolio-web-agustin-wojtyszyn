@@ -30,17 +30,17 @@ const Contact: FC = memo(() => {
   const {headerText, description, items} = contact;
   return (
     <Section className="bg-neutral-800" sectionId={SectionId.Contact}>
-      <div className="flex flex-col gap-y-6" data-reveal>
-        <div className="flex flex-col gap-6 md:flex-row md:items-center">
+      <div className="flex flex-col gap-y-8" data-reveal>
+        <div className="flex flex-col gap-5 md:flex-row md:items-center">
           <EnvelopeIcon className="hidden h-16 w-16 text-white md:block" />
-          <h2 className="text-2xl font-bold text-white">{headerText}</h2>
+          <h2 className="text-2xl font-semibold tracking-[0.03em] text-white sm:text-3xl">{headerText}</h2>
         </div>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-7 md:grid-cols-2 md:items-start">
           <div className="order-2 col-span-1 md:order-1 ">
             <ContactForm />
           </div>
-          <div className="order-1 col-span-1 flex flex-col gap-y-4 md:order-2">
-            <p className="prose leading-6 text-neutral-300">{description}</p>
+          <div className="order-1 col-span-1 flex flex-col gap-y-5 md:order-2">
+            <p className="prose max-w-lg leading-7 text-neutral-300">{description}</p>
             <dl className="flex flex-col space-y-4 text-base text-neutral-500 sm:space-y-2">
               {items.map(({type, text, href}) => {
                 const {Icon, srLabel} = ContactValueMap[type];
@@ -50,7 +50,7 @@ const Contact: FC = memo(() => {
                     <dd className="flex items-center">
                       <a
                         className={classNames(
-                          '-m-2 flex rounded-md p-2 text-neutral-300 hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500',
+                          'ui-btn -m-2 flex rounded-md p-2 text-neutral-300 hover:text-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500',
                           {'hover:text-white': href},
                         )}
                         href={href}

@@ -2,7 +2,7 @@ import {Dialog, Transition} from '@headlessui/react';
 import {Bars3BottomRightIcon} from '@heroicons/react/24/outline';
 import classNames from 'classnames';
 import Link from 'next/link';
-import {FC, Fragment, memo, useCallback, useMemo, useState} from 'react';
+import {FC, Fragment, memo, useCallback, useEffect, useMemo, useState} from 'react';
 
 import {useLanguage} from '../../context/LanguageContext';
 import {getUiText, SectionId} from '../../data/data';
@@ -29,12 +29,12 @@ const Header: FC = memo(() => {
     <>
       <MobileNav
         currentSection={currentSection}
+        menuButtonAria={uiText.menuButtonAria}
         navSections={navSections}
+        openSidebarAria={uiText.openSidebarAria}
         sectionLabels={uiText.nav}
         toggleLanguage={toggleLanguage}
         uiLanguageLabel={uiText.languageToggle}
-        menuButtonAria={uiText.menuButtonAria}
-        openSidebarAria={uiText.openSidebarAria}
       />
       <DesktopNav
         currentSection={currentSection}
@@ -54,33 +54,44 @@ const DesktopNav: FC<{
   toggleLanguage: () => void;
   uiLanguageLabel: string;
 }> = memo(({navSections, currentSection, sectionLabels, toggleLanguage, uiLanguageLabel}) => {
-    const baseClass =
-      '-m-1.5 p-1.5 rounded-md font-bold first-letter:uppercase hover:transition-colors hover:duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 sm:hover:text-orange-500 text-neutral-100';
-    const activeClass = classNames(baseClass, 'text-orange-500');
-    const inactiveClass = classNames(baseClass, 'text-neutral-100');
-    return (
-      <header className="fixed top-0 z-50 hidden w-full bg-neutral-900/50 p-4 backdrop-blur sm:block" id={headerID}>
-        <nav className="flex items-center justify-center gap-x-8">
-          {navSections.map(section => (
-            <NavItem
-              activeClass={activeClass}
-              current={section === currentSection}
-              inactiveClass={inactiveClass}
-              key={section}
-              label={sectionLabels[section]}
-              section={section}
-            />
-          ))}
-          <button
-            className="rounded-md border border-neutral-300 px-2 py-1 text-sm font-semibold text-neutral-100 hover:border-orange-400 hover:text-orange-400"
-            onClick={toggleLanguage}
-            type="button">
-            {uiLanguageLabel}
-          </button>
-        </nav>
-      </header>
-    );
-  });
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 18);
+    onScroll();
+    window.addEventListener('scroll', onScroll, {passive: true});
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const baseClass =
+    'nav-link -m-1.5 rounded-md p-1.5 text-sm font-semibold uppercase tracking-[0.08em] transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 sm:hover:text-orange-400';
+  const activeClass = classNames(baseClass, 'text-orange-300');
+  const inactiveClass = classNames(baseClass, 'text-neutral-100/95');
+  return (
+    <header
+      className={classNames('site-nav fixed top-0 z-50 hidden w-full p-4 sm:block', {'is-scrolled': isScrolled})}
+      id={headerID}>
+      <nav className="mx-auto flex max-w-screen-lg items-center justify-center gap-x-8 rounded-xl border border-transparent px-4 py-2">
+        {navSections.map(section => (
+          <NavItem
+            activeClass={activeClass}
+            current={section === currentSection}
+            inactiveClass={inactiveClass}
+            key={section}
+            label={sectionLabels[section]}
+            section={section}
+          />
+        ))}
+        <button
+          className="ui-btn rounded-full border border-neutral-300/60 bg-neutral-900/30 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-neutral-100 hover:border-orange-400/80 hover:text-orange-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+          onClick={toggleLanguage}
+          type="button">
+          {uiLanguageLabel}
+        </button>
+      </nav>
+    </header>
+  );
+});
 
 const MobileNav: FC<{
   navSections: SectionId[];
@@ -91,15 +102,7 @@ const MobileNav: FC<{
   menuButtonAria: string;
   openSidebarAria: string;
 }> = memo(
-  ({
-    navSections,
-    currentSection,
-    sectionLabels,
-    toggleLanguage,
-    uiLanguageLabel,
-    menuButtonAria,
-    openSidebarAria,
-  }) => {
+  ({navSections, currentSection, sectionLabels, toggleLanguage, uiLanguageLabel, menuButtonAria, openSidebarAria}) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const toggleOpen = useCallback(() => {
@@ -107,14 +110,14 @@ const MobileNav: FC<{
     }, [isOpen]);
 
     const baseClass =
-      'p-2 rounded-md first-letter:uppercase transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500';
-    const activeClass = classNames(baseClass, 'bg-neutral-900 text-white font-bold');
-    const inactiveClass = classNames(baseClass, 'text-neutral-200 font-medium');
+      'p-2 rounded-md text-sm font-semibold uppercase tracking-[0.08em] transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500';
+    const activeClass = classNames(baseClass, 'bg-neutral-900 text-orange-300');
+    const inactiveClass = classNames(baseClass, 'text-neutral-200');
     return (
       <>
         <button
           aria-label={menuButtonAria}
-          className="fixed right-2 top-2 z-40 rounded-md bg-orange-500 p-2 ring-offset-gray-800/60 hover:bg-orange-400 focus:outline-none focus:ring-0 focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 sm:hidden"
+          className="fixed right-2 top-2 z-40 rounded-lg border border-orange-300/50 bg-orange-500/90 p-2 ring-offset-gray-800/60 hover:bg-orange-400 focus:outline-none focus:ring-0 focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 sm:hidden"
           onClick={toggleOpen}>
           <Bars3BottomRightIcon className="h-8 w-8 text-white" />
           <span className="sr-only">{openSidebarAria}</span>
@@ -139,10 +142,10 @@ const MobileNav: FC<{
               leave="transition ease-in-out duration-300 transform"
               leaveFrom="translate-x-0"
               leaveTo="-translate-x-full">
-              <div className="relative w-4/5 bg-stone-800">
+              <div className="relative w-4/5 border-r border-blue-200/15 bg-stone-800/95 backdrop-blur">
                 <nav className="mt-5 flex flex-col gap-y-2 px-2">
                   <button
-                    className="w-max rounded-md border border-neutral-300 px-3 py-2 text-sm font-semibold text-neutral-100"
+                    className="ui-btn w-max rounded-full border border-neutral-300 px-3 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-neutral-100"
                     onClick={toggleLanguage}
                     type="button">
                     {uiLanguageLabel}
@@ -178,7 +181,7 @@ const NavItem: FC<{
 }> = memo(({section, label, current, inactiveClass, activeClass, onClick}) => {
   return (
     <Link
-      className={classNames(current ? activeClass : inactiveClass)}
+      className={classNames(current ? `${activeClass} active` : inactiveClass)}
       href={`/#${section}`}
       key={section}
       onClick={onClick}>

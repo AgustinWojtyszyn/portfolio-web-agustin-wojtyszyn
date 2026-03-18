@@ -1,3 +1,141 @@
+@media (max-width: 640px) {
+  section {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+  .resume-card, .resume-skill-card, .project-panel, .hero-card {
+    padding: 1rem 0.5rem !important;
+    border-radius: 0.9rem !important;
+    font-size: 1rem;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.22);
+  }
+  .resume-card-title, .project-meta-tag {
+    font-size: 1.1rem !important;
+  }
+  .resume-card-content, .resume-card-content p, .resume-card-content li {
+    font-size: 0.98rem !important;
+    line-height: 1.6 !important;
+  }
+  .project-panel {
+    margin-bottom: 1.2rem;
+  }
+  .project-cta {
+    font-size: 1rem !important;
+    padding: 0.7rem 0.5rem !important;
+  }
+  .project-stack-pill {
+    font-size: 0.95rem !important;
+    padding: 0.2rem 0.6rem !important;
+  }
+  .ui-btn {
+    font-size: 1rem !important;
+    padding: 0.7rem 0.5rem !important;
+  }
+  .prose, .prose-sm, .prose-base {
+    font-size: 1rem !important;
+    line-height: 1.6 !important;
+  }
+}
+@media (max-width: 640px) {
+  section#about {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+  section#about .grid {
+    gap: 1.5rem 0 !important;
+  }
+  section#about .flex.flex-col {
+    gap: 1rem !important;
+  }
+  section#about h2 {
+    font-size: 1.35rem;
+    margin-bottom: 0.25rem;
+    text-align: center;
+  }
+  section#about p {
+    font-size: 1rem;
+    line-height: 1.6;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+  section#about ul {
+    gap: 0.5rem !important;
+  }
+  section#about li {
+    gap: 0.5rem !important;
+    align-items: flex-start !important;
+  }
+  section#about .relative.h-24.w-24 {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+/* --- Mobile Hero Section & Decorations --- */
+@media (max-width: 640px) {
+  .hero-reactive-root {
+    min-height: 70vh;
+    height: 80dvh;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+  .hero-card.hero-anim-card {
+    padding: 1.25rem 0.5rem;
+    gap: 1.25rem;
+    border-radius: 1rem;
+    max-width: 98vw;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.38);
+  }
+  .hero-title.hero-anim-title {
+    font-size: 2rem;
+    line-height: 2.3rem;
+    margin-bottom: 0.5rem;
+  }
+  .hero-anim-description {
+    margin-top: 0.5rem !important;
+    gap: 0.5rem !important;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  .hero-anim-description p {
+    font-size: 1rem;
+    line-height: 1.5;
+    max-width: 90vw;
+  }
+  .hero-anim-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  .hero-action-btn.ui-btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 1rem;
+    padding: 0.75rem 0.5rem;
+  }
+  .hero-anim-socials {
+    gap: 0.75rem;
+  }
+  .hero-title-stars {
+    left: -80px;
+    right: -80px;
+    height: 48px;
+    bottom: calc(100% + 8px);
+    opacity: 0.5;
+  }
+  .hero-starfield,
+  .hero-starfield-a,
+  .hero-starfield-b,
+  .hero-starfield-c {
+    opacity: 0.25 !important;
+    filter: blur(1.5px) brightness(0.7);
+  }
+  .hero-constellation-lines,
+  .hero-ambient-light,
+  .hero-cursor-glow {
+    opacity: 0.12 !important;
+    filter: blur(2px);
+  }
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -26,10 +164,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+
 html {
   -webkit-tap-highlight-color: transparent;
   scroll-behavior: smooth;
   height: 100vh;
+  width: 100vw;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 :root {
@@ -39,9 +181,12 @@ html {
   --shadow-soft: 0 14px 30px rgba(0, 0, 0, 0.28);
 }
 
+
 body {
   position: relative;
-  width: 100%;
+  width: 100vw;
+  max-width: 100vw;
+  overflow-x: hidden;
   color: #444444;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Ubuntu, 'Helvetica Neue', sans-serif;
   background-color: #fafafa;
